@@ -1,0 +1,53 @@
+@font-face {
+  font-family: "Martian Mono";
+  src: url("../assets/fonts/MartianMono/MartianMono-Thin.ttf")
+    format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Martian Mono";
+  src: url("../assets/fonts/MartianMono/MartianMono-ExtraLight.ttf")
+    format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Martian Mono";
+  src: url("../assets/fonts/MartianMono/MartianMono-Light.ttf")
+    format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Martian Mono";
+  src: url("../assets/fonts/MartianMono/MartianMono-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Martian Mono";
+  src: url("../assets/fonts/MartianMono/MartianMono-Medium.ttf")
+    format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Martian Mono";
+  src: url("../assets/fonts/MartianMono/MartianMono-SemiBold.ttf")
+    format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Martian Mono";
+  src: url("../assets/fonts/MartianMono/MartianMono-Bold.ttf")
+    format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@theme {
+  --font-martian-mono: "Martian Mono", monospace;
+}
