@@ -9,22 +9,24 @@ import TechSelector from "@/components/MiniTerminal/TechSelector";
   >
   </div>
   <div
-    class="flex w-full max-w-400 flex-col items-center justify-between gap-12 p-10 pb-20 md:flex-row"
+    class="flex w-full max-w-400 flex-col items-center justify-between gap-12 p-10 md:flex-row"
   >
     <div class="">
       <h1
-        class="text-theme-800 font-martian-mono text-center text-7xl leading-20 font-medium uppercase md:text-left"
+        class="text-theme-800 font-martian-mono animate-fade-in-right text-center text-7xl leading-20 font-medium uppercase md:text-left"
       >
         Ezequiel<br />Mastropietro
       </h1>
       <h2
-        class="text-theme-700 font-martian-mono text-center text-xl font-semibold md:text-left"
+        class="text-theme-700 font-martian-mono animate-fade-in-right text-center text-xl font-semibold md:text-left"
       >
         Desarrollador full stack
       </h2>
-      <TechSelector />
+      <div class="animate-fade-in-up animate-delay-300 mt-8 min-h-18">
+        <TechSelector client:load client:only />
+      </div>
     </div>
-    <div class="">
+    <div class="animate-fade-in-up animate-delay-200">
       <MiniTerminal />
     </div>
   </div>

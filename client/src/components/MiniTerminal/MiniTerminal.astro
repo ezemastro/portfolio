@@ -3,11 +3,11 @@ import Content from "./Content";
 import Tab from "./Tab";
 ---
 
-<div class="bg-theme-800 relative flex h-52 w-lg flex-col rounded-sm">
+<div class="bg-theme-800 relative flex h-80 w-xl flex-col rounded-sm">
   <div class="bg-theme-700 flex h-9 w-full rounded-t-sm">
-    <Tab />
+    <Tab client:load client:only />
   </div>
-  <div class="flex w-full grow items-center justify-center">
-    <Content />
+  <div class="flex w-full grow px-4 py-2">
+    <Content client:load client:only />
   </div>
 </div>
