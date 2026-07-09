@@ -1,0 +1,52 @@
+schema: spec-driven
+
+context: |
+  Stack: Astro 5.17 (SSG) + Preact 10.28 (islands) + TailwindCSS 4.1 + TypeScript strict
+  Runtime: Node.js 24 (devcontainer: javascript-node:24-bookworm)
+  Architecture: Astro pages with Preact islands, layout-based templating, path alias @/ -> src/
+  Monorepo: Single client/ package, no backend detected
+  Dev env: VS Code devcontainer with astro, eslint, prettier, tailwindcss extensions
+
+strict_tdd: false
+
+testing:
+  runner: null
+  command: null
+  framework: null
+  unit: false
+  integration: false
+  e2e: false
+  coverage: false
+  coverage_command: null
+  linter: false
+  linter_command: null
+  type_checker: true
+  type_checker_command: "npx astro check"
+  formatter: true
+  formatter_command: "npx prettier --write ."
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing Astro/Preact patterns
+    - Use Preact islands, not full SPA components
+    - Respect path alias @/ -> src/
+    tdd: false
+    test_command: ""
+    build_command: "npx astro build"
+  verify:
+    test_command: ""
+    build_command: "npx astro build"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
