@@ -1,0 +1,153 @@
+---
+import TechBadge from "@/components/TechBadge";
+import ImageCarousel from "@/components/ImageCarousel";
+import type { Project } from "@/constants/projects";
+
+interface Props {
+  project: Project;
+  slideCount?: number;
+}
+
+const { project, slideCount = 2 } = Astro.props;
+---
+
+<article
+  class="group flex h-full flex-col rounded-xl border border-theme-200 bg-theme-50 p-6 shadow-sm transition-all duration-300 hover:border-theme-400 hover:shadow-md"
+>
+  <div class="flex items-start justify-between gap-2">
+    <span
+      class="inline-block shrink-0 rounded-full bg-theme-300 px-3 py-0.5 font-martian-mono text-xs font-medium text-theme-700"
+    >
+      {project.category}
+    </span>
+    {
+      project.links?.repo && (
+        <a
+          href={project.links.repo}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-theme-400 transition-colors hover:text-theme-600"
+          aria-label="Ver repositorio"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-5"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </a>
+      )
+    }
+  </div>
+
+  <h3 class="mt-3 font-martian-mono text-xl font-semibold text-theme-800">
+    {project.title}
+  </h3>
+
+  <p class="mt-2 text-sm leading-relaxed text-theme-600">
+    {project.description}
+  </p>
+
+  <!-- Image carousel -->
+  <div class="mt-4">
+    <ImageCarousel count={slideCount} client:load />
+  </div>
+
+  <!-- Tech badges -->
+  <div class="mt-4 flex flex-wrap gap-2">
+    {project.techStack.map((tech) => (
+      <TechBadge
+        name={tech.name}
+        icon={tech.icon}
+        explanation={tech.explanation}
+        client:load
+      />
+    ))}
+  </div>
+
+  <!-- Long description — always visible -->
+  {
+    project.longDescription && (
+      <p class="mt-4 text-sm leading-relaxed text-theme-600">
+        {project.longDescription}
+      </p>
+    )
+  }
+
+  <!-- Links + AI button -->
+  <div class="mt-auto flex flex-wrap items-center gap-3 pt-4">
+    {
+      project.links?.demo && (
+        <a
+          href={project.links.demo}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 rounded-full bg-theme-400 px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-theme-500"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-3.5"
+          ><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+          Demo
+        </a>
+      )
+    }
+    {
+      project.links?.playStore && (
+        <a
+          href={project.links.playStore}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 rounded-full bg-theme-200 px-3 py-1 text-xs font-medium text-theme-700 transition-colors hover:bg-theme-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-3.5"
+          ><polygon points="5 3 19 12 5 21 5 3" /></svg>
+          Play Store
+        </a>
+      )
+    }
+
+    <!-- AI "Saber más" button -->
+    <button
+      type="button"
+      class="ml-auto inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-theme-400 to-theme-500 px-3 py-1 text-xs font-medium text-white transition-all duration-300 hover:from-theme-500 hover:to-theme-600 hover:scale-105 hover:shadow-md"
+      title="Preguntale a mi asistente con IA sobre este proyecto"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-3.5"
+        aria-hidden="true"
+      >
+        <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+        <path d="M20 3v4" /><path d="M22 5h-4" /><path d="M4 17v2" /><path d="M5 18H3" />
+      </svg>
+      Saber más
+    </button>
+  </div>
+</article>

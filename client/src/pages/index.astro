@@ -1,8 +1,12 @@
 ---
 import Header from "@/components/Header.astro";
+import ImageModal from "@/components/ImageModal";
 import Layout from "@/layouts/Layout.astro";
+import ProjectsSection from "@/components/ProjectsSection.astro";
 ---
 
 <Layout>
   <Header />
+  <ProjectsSection />
+  <ImageModal client:load />
 </Layout>
