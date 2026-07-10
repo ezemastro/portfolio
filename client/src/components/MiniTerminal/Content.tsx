@@ -20,7 +20,7 @@ export default function Content() {
   );
 
   return (
-    <pre className={"leading-5"}>
+    <pre className={"w-full leading-5 break-words whitespace-pre-wrap"}>
       <code
         dangerouslySetInnerHTML={{ __html: highlightedCode }}
         className="text-theme-50 font-martian-mono text-xs font-light"

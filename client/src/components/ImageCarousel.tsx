@@ -7,6 +7,7 @@ interface Props {
 }
 
 const TRANSITION_DURATION = 300; // ms
+const AUTOPLAY_INTERVAL = 4000; // ms
 
 export default function ImageCarousel({ count }: Props) {
   const [index, setIndex] = useState(0);
@@ -15,6 +16,20 @@ export default function ImageCarousel({ count }: Props) {
   const touchCurrentX = useRef<number>(0);
   const [dragging, setDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
+  const [hovered, setHovered] = useState(false);
+
+  // Autoplay: advance with wrap-around, paused while the user hovers,
+  // drags, or has the image modal open.
+  useEffect(() => {
+    if (count <= 1 || hovered || dragging) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const id = setInterval(() => {
+      if (document.hidden || activeModalImage.value?.open) return;
+      setIndex((i) => (i + 1) % count);
+    }, AUTOPLAY_INTERVAL);
+    return () => clearInterval(id);
+  }, [count, hovered, dragging]);
 
   const goTo = useCallback(
     (newIndex: number) => {
@@ -86,7 +101,11 @@ export default function ImageCarousel({ count }: Props) {
     : -(index * 100);
 
   return (
-    <div class="group/carousel relative overflow-hidden rounded-lg">
+    <div
+      class="group/carousel relative overflow-hidden rounded-sm"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       {/* Slides track */}
       <div
         ref={trackRef}
@@ -173,7 +192,7 @@ export default function ImageCarousel({ count }: Props) {
           <button
             type="button"
             onClick={goPrev}
-            class="bg-theme-950/30 hover:bg-theme-950/50 absolute top-1/2 left-2 -translate-y-1/2 rounded-full p-1.5 text-white opacity-0 transition-all duration-200 group-hover/carousel:opacity-100 hover:scale-110 focus-visible:opacity-100"
+            class="bg-theme-950/30 hover:bg-theme-950/50 absolute top-1/2 left-2 -translate-y-1/2 rounded-full p-1.5 text-white opacity-0 transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/carousel:opacity-100 hover:scale-125 active:scale-90 focus-visible:opacity-100"
             aria-label="Previous slide"
           >
             <svg
@@ -192,7 +211,7 @@ export default function ImageCarousel({ count }: Props) {
           <button
             type="button"
             onClick={goNext}
-            class="bg-theme-950/30 hover:bg-theme-950/50 absolute top-1/2 right-2 -translate-y-1/2 rounded-full p-1.5 text-white opacity-0 transition-all duration-200 group-hover/carousel:opacity-100 hover:scale-110 focus-visible:opacity-100"
+            class="bg-theme-950/30 hover:bg-theme-950/50 absolute top-1/2 right-2 -translate-y-1/2 rounded-full p-1.5 text-white opacity-0 transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/carousel:opacity-100 hover:scale-125 active:scale-90 focus-visible:opacity-100"
             aria-label="Next slide"
           >
             <svg
@@ -219,10 +238,10 @@ export default function ImageCarousel({ count }: Props) {
               key={i}
               type="button"
               onClick={() => goTo(i)}
-              class={`size-2 rounded-full transition-all duration-200 ${
+              class={`size-2 rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] active:scale-75 ${
                 i === index
-                  ? "scale-110 bg-white shadow-sm"
-                  : "bg-white/50 hover:bg-white/80"
+                  ? "scale-125 bg-white shadow-sm"
+                  : "bg-white/50 hover:scale-110 hover:bg-white/80"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />

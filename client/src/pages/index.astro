@@ -1,14 +1,20 @@
 ---
+import Navbar from "@/components/Navbar.astro";
 import Header from "@/components/Header.astro";
 import ImageModal from "@/components/ImageModal";
 import Layout from "@/layouts/Layout.astro";
 import ProjectsSection from "@/components/ProjectsSection.astro";
+import AboutSection from "@/components/AboutSection.astro";
 import AIChatSection from "@/components/AIChatSection.astro";
+import ContactSection from "@/components/ContactSection.astro";
 ---
 
 <Layout>
+  <Navbar />
   <Header />
-  <AIChatSection />
   <ProjectsSection />
+  <AboutSection />
+  <AIChatSection />
+  <ContactSection />
   <ImageModal client:load />
 </Layout>

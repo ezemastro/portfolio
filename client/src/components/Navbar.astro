@@ -1,0 +1,195 @@
+---
+const NAV_ITEMS = [
+  { label: "Inicio", target: "inicio" },
+  { label: "Proyectos", target: "proyectos" },
+  { label: "Sobre mí", target: "sobre-mi" },
+  { label: "IA", target: "ia" },
+  { label: "Contacto", target: "contacto" },
+];
+---
+
+<nav
+  id="site-navbar"
+  class="navbar-enter fixed inset-x-0 top-0 z-40 border-b border-transparent transition-[background-color,border-color,box-shadow] duration-300"
+>
+  <!-- Reading progress bar -->
+  <div
+    id="scroll-progress"
+    class="bg-theme-400 absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="container-page flex h-16 items-center justify-between">
+    <a
+      href="#inicio"
+      class="font-martian-mono text-theme-800 hover:text-theme-600 active:scale-90 text-sm font-semibold tracking-widest uppercase transition-[color,transform] duration-200"
+    >
+      EM<span class="text-theme-400">_</span>
+    </a>
+
+    <ul
+      id="nav-links"
+      class="border-theme-200 bg-theme-50/95 font-martian-mono fixed inset-x-0 top-16 hidden flex-col gap-1 border-t p-4 text-sm backdrop-blur-md md:inset-auto md:relative md:flex md:flex-row md:items-center md:gap-1 md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none"
+    >
+      <!-- Sliding active-section indicator (desktop only) — a slim underline
+           rather than a filled block, so it stays light and unobtrusive. -->
+      <span
+        id="nav-pill"
+        class="bg-theme-400 pointer-events-none absolute -bottom-1 left-0 hidden h-0.5 rounded-full opacity-0 shadow-[0_0_8px_1px] shadow-theme-400/60 transition-[transform,width,opacity] duration-350 ease-[cubic-bezier(0.34,1.56,0.64,1)] md:block"
+        aria-hidden="true"
+      >
+      </span>
+      {
+        NAV_ITEMS.map((item, i) => (
+          <li
+            class="nav-item-enter"
+            style={`animation-delay: ${420 + i * 90}ms`}
+          >
+            <a
+              href={`#${item.target}`}
+              data-nav-link
+              data-target={item.target}
+              class="nav-link text-theme-600 hover:text-theme-900 data-[active=true]:text-theme-900 active:scale-95 relative z-10 block rounded-sm px-3 py-2 transition-[color,transform] duration-200 md:hover:bg-transparent"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <button
+      id="nav-toggle"
+      type="button"
+      class="tech-chip active:scale-90 flex size-9 cursor-pointer items-center justify-center md:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="nav-links"
+    >
+      <svg
+        id="nav-toggle-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-theme-700 size-5 transition-transform duration-300"
+      >
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<script>
+  const nav = document.getElementById("site-navbar");
+  const toggle = document.getElementById("nav-toggle");
+  const links = document.getElementById("nav-links");
+  const toggleIcon = document.getElementById("nav-toggle-icon");
+  const pill = document.getElementById("nav-pill");
+  if (!nav || !toggle || !links || !toggleIcon) {
+    throw new Error("Navbar: expected elements not found");
+  }
+
+  const HAMBURGER = `<line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line>`;
+  const CLOSE = `<line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line>`;
+
+  const setMenuOpen = (open: boolean) => {
+    links.classList.toggle("hidden", !open);
+    links.classList.toggle("flex", open);
+    // Animate the dropdown in on mobile (class is inert on md+ where the
+    // list is static).
+    links.classList.toggle("animate-fade-in-down", open);
+    links.classList.toggle("animate-duration-200", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    toggleIcon.style.transform = open ? "rotate(90deg)" : "rotate(0deg)";
+    toggleIcon.innerHTML = open ? CLOSE : HAMBURGER;
+  };
+
+  toggle.addEventListener("click", () => {
+    const isOpen = !links.classList.contains("hidden");
+    setMenuOpen(!isOpen);
+  });
+
+  links.querySelectorAll("a[data-nav-link]").forEach((link) => {
+    link.addEventListener("click", () => setMenuOpen(false));
+  });
+
+  // Background/blur appears once the page has scrolled past the hero top.
+  const SCROLLED_CLASSES = [
+    "bg-theme-50/85",
+    "backdrop-blur-md",
+    "border-theme-200",
+    "shadow-sm",
+  ];
+  const progress = document.getElementById("scroll-progress");
+  const onScroll = () => {
+    const scrolled = window.scrollY > 24;
+    nav.classList.toggle(SCROLLED_CLASSES[0], scrolled);
+    nav.classList.toggle(SCROLLED_CLASSES[1], scrolled);
+    nav.classList.toggle(SCROLLED_CLASSES[2], scrolled);
+    nav.classList.toggle(SCROLLED_CLASSES[3], scrolled);
+
+    if (progress) {
+      const max =
+        document.documentElement.scrollHeight - window.innerHeight || 1;
+      progress.style.transform = `scaleX(${Math.min(window.scrollY / max, 1)})`;
+    }
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // --- Active-section indicator + sliding pill ---
+  const navLinks = Array.from(
+    links.querySelectorAll<HTMLAnchorElement>("a[data-nav-link]"),
+  );
+  const sections = navLinks
+    .map((link) => document.getElementById(link.dataset.target || ""))
+    .filter((el): el is HTMLElement => el !== null);
+
+  let activeLink: HTMLAnchorElement | null = null;
+
+  const movePillTo = (link: HTMLAnchorElement | null) => {
+    if (!pill || !link) return;
+    const linkRect = link.getBoundingClientRect();
+    const listRect = links.getBoundingClientRect();
+    pill.style.width = `${linkRect.width}px`;
+    pill.style.transform = `translateX(${linkRect.left - listRect.left}px)`;
+    pill.style.opacity = "1";
+  };
+
+  const setActive = (id: string) => {
+    for (const link of navLinks) {
+      const isActive = link.dataset.target === id;
+      link.dataset.active = String(isActive);
+      if (isActive) activeLink = link;
+    }
+    movePillTo(activeLink);
+  };
+
+  // Pill previews the hovered item, then snaps back to the active one.
+  links.addEventListener("mouseleave", () => movePillTo(activeLink));
+  navLinks.forEach((link) => {
+    link.addEventListener("mouseenter", () => movePillTo(link));
+  });
+  window.addEventListener("resize", () => movePillTo(activeLink));
+
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      const visible = entries.filter((e) => e.isIntersecting);
+      if (visible.length > 0) {
+        setActive(visible[0].target.id);
+      }
+    },
+    { rootMargin: "-40% 0px -55% 0px", threshold: 0 },
+  );
+  sections.forEach((section) => sectionObserver.observe(section));
+
+  // Position the pill once the entrance animation has settled.
+  window.setTimeout(() => setActive(activeLink?.dataset.target ?? "inicio"), 900);
+</script>

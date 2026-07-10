@@ -3,16 +3,26 @@ import "@/styles/global.css";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <meta
+      name="description"
+      content="Ezequiel Mastropietro — desarrollador full stack. Portfolio con proyectos, stack tecnológico y un asistente de IA para responder preguntas sobre mi trabajo."
+    />
+    <title>Ezequiel Mastropietro — Desarrollador Full Stack</title>
   </head>
-  <body class="bg-theme-100">
+  <body class="bg-theme-200/90">
+    <!-- Site-wide pattern layer: fixed so every section shares the same
+         backdrop; sections/panels above use translucent (~90%) surfaces. -->
+    <div
+      class="background-pattern fixed inset-0 -z-10 opacity-30"
+      aria-hidden="true"
+    >
+    </div>
     <slot />
   </body>
 </html>
@@ -23,5 +33,46 @@ import "@/styles/global.css";
     margin: 0;
     width: 100%;
     height: 100%;
+    /* Decorative glow blobs intentionally bleed past their section edges;
+       this guarantees they (or anything else) never introduce horizontal
+       scroll on the page. */
+    overflow-x: hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 </style>
+
+<script>
+  // Site-wide scroll reveal: any element with [data-reveal] fades/slides in
+  // once when it enters the viewport. Base/visible styles live in
+  // src/styles/utilities.css.
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      }
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+  );
+  document
+    .querySelectorAll("[data-reveal]")
+    .forEach((el) => revealObserver.observe(el));
+
+  // Small hello for the curious dev that opens the console.
+  console.log(
+    "%c EM_ %c ¿Inspeccionando? Me gusta tu estilo. Preguntale al chat de IA lo que quieras sobre mí →",
+    "background:#407bbf;color:#ecf2f9;font-family:monospace;font-weight:bold;padding:4px 6px;border-radius:3px",
+    "color:#407bbf;font-family:monospace;padding:4px 0",
+  );
+</script>
