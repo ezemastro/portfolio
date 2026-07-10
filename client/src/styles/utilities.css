@@ -15,3 +15,179 @@
     );
   background-size: var(--s) calc(var(--s) * 0.577);
 }
+
+/* Shared page-width rhythm — used by the navbar and every section so the
+   layout reads coherently from mobile up through ultrawide monitors. */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem; /* 1280px */
+  padding-inline: 1rem;
+
+  @variant md {
+    padding-inline: 2rem;
+  }
+}
+
+/* Base "chip" look shared by tech icons and small pill buttons — barely
+   rounded (matches the mini terminal), translucent, soft glow on hover. */
+@utility tech-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  border-width: 1px;
+  border-color: color-mix(in srgb, var(--color-theme-300) 50%, transparent);
+  background-color: color-mix(in srgb, var(--color-theme-50) 65%, transparent);
+  backdrop-filter: blur(6px);
+  transition:
+    transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 250ms ease,
+    background-color 250ms ease,
+    border-color 250ms ease,
+    opacity 250ms ease;
+}
+
+@utility press-feedback {
+  transition: transform 150ms ease;
+
+  &:active {
+    transform: scale(0.93);
+  }
+}
+
+@utility tech-chip-glow {
+  &:hover {
+    box-shadow: 0 0 16px 1px
+      color-mix(in srgb, var(--color-theme-400) 45%, transparent);
+    border-color: color-mix(in srgb, var(--color-theme-400) 70%, transparent);
+  }
+}
+
+/* Slow-drifting decorative glow used behind hero/section headers. */
+@utility glow-blob {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-theme-400) 35%, transparent) 0%,
+    transparent 70%
+  );
+  animation: glow-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes glow-drift {
+  0% {
+    transform: translate(-4%, -2%) scale(1);
+  }
+  100% {
+    transform: translate(4%, 3%) scale(1.15);
+  }
+}
+
+/* Scroll reveal — toggled by an IntersectionObserver in Layout.astro.
+   Optional variants via the attribute value:
+   data-reveal        → fade + slide up (default)
+   data-reveal="left" → fade + slide in from the left (section titles)
+   data-reveal="scale"→ fade + subtle scale up (cards/panels)
+   data-reveal="bar"  → horizontal draw, left to right (title underlines) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal="left"] {
+  transform: translateX(-28px);
+}
+
+[data-reveal="scale"] {
+  transform: translateY(12px) scale(0.97);
+}
+
+[data-reveal="bar"] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Blinking caret for typewriter text (hero subtitle). */
+.type-cursor {
+  display: inline-block;
+  width: 0.55em;
+  margin-left: 2px;
+  border-bottom: 2px solid currentColor;
+  animation: cursor-blink 1s steps(2) infinite;
+}
+
+@keyframes cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .type-cursor {
+    animation: none;
+  }
+}
+
+/* Navbar entrance — the bar drops in with a slight overshoot, then each
+   link pops in one after another (staggered via inline animation-delay). */
+@keyframes navbar-drop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  65% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.navbar-enter {
+  animation: navbar-drop 750ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes nav-item-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.85);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(1px) scale(1.04);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.nav-item-enter {
+  animation: nav-item-pop 550ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-enter,
+  .nav-item-enter {
+    animation: none;
+  }
+}

@@ -68,7 +68,7 @@ export default function ImageModal() {
       <button
         type="button"
         onClick={close}
-        class="bg-theme-950/50 hover:bg-theme-950/80 focus-visible:ring-theme-400 absolute top-4 right-4 z-10 rounded-full p-2 text-white transition-colors focus-visible:ring-2 focus-visible:outline-none"
+        class="bg-theme-950/50 hover:bg-theme-950/80 focus-visible:ring-theme-400 absolute top-4 right-4 z-10 rounded-sm p-2 text-white transition-all duration-250 ease-out hover:scale-105 focus-visible:ring-2 focus-visible:outline-none"
         aria-label="Close"
       >
         <svg
@@ -87,7 +87,7 @@ export default function ImageModal() {
       </button>
 
       {/* Placeholder image large in center */}
-      <div class="from-theme-200 to-theme-400 flex aspect-video w-full max-w-4xl items-center justify-center rounded-xl bg-gradient-to-br shadow-2xl">
+      <div class="from-theme-200 to-theme-400 flex aspect-video w-full max-w-4xl items-center justify-center rounded-sm bg-gradient-to-br shadow-2xl">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 48 48"

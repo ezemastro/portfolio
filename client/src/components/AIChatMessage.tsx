@@ -138,7 +138,7 @@ const PROSE_CLASSES = [
   "[&_li]:mb-0",
   "[&_strong]:font-semibold",
   "[&_code]:rounded [&_code]:bg-theme-200/60 [&_code]:px-1 [&_code]:text-xs",
-  "[&_pre]:mb-1 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-theme-800 [&_pre]:p-3 [&_pre]:text-xs [&_pre]:text-theme-100",
+  "[&_pre]:mb-1 [&_pre]:overflow-x-auto [&_pre]:rounded-sm [&_pre]:bg-theme-800 [&_pre]:p-3 [&_pre]:text-xs [&_pre]:text-theme-100",
   "[&_table]:mb-1 [&_table]:w-full [&_table]:text-xs [&_table]:table-auto [&_table]:font-martian-mono",
   "[&_th]:border [&_th]:border-theme-300 [&_th]:bg-theme-200/50 [&_th]:px-2 [&_th]:py-1 [&_th]:text-left [&_th]:font-semibold [&_th]:whitespace-nowrap [&_th]:font-martian-mono",
   "[&_td]:border [&_td]:border-theme-200 [&_td]:px-2 [&_td]:py-1 [&_td]:max-w-[200px] [&_td]:font-martian-mono",
@@ -161,7 +161,9 @@ export default function AIChatMessage({
   const isUser = role === "user";
 
   return (
-    <div class={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+    <div
+      class={`animate-fade-in-up animate-duration-300 flex motion-reduce:animate-none ${isUser ? "justify-end" : "justify-start"}`}
+    >
       <div
         class={`flex max-w-[80%] items-start gap-2 ${isUser ? "flex-row-reverse" : "flex-row"}`}
       >
@@ -171,7 +173,7 @@ export default function AIChatMessage({
         )}
 
         <div
-          class={`rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+          class={`rounded-sm px-3 py-2 text-sm leading-relaxed ${
             isUser
               ? "bg-theme-400 font-martian-mono text-white"
               : `bg-theme-100 text-theme-800 ${PROSE_CLASSES}`

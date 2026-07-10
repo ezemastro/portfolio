@@ -6,9 +6,11 @@ interface Tech {
   lang: string;
   tabName: string;
   icon: string;
+  /** One-line description shown on hover in the "Sobre mí" stack grid. */
+  description: string;
   content: string;
 }
-const ICON_BASE_PATH = "/src/assets/icons/tech/";
+const ICON_BASE_PATH = "/icons/tech/";
 
 export const TECH_STACK: Tech[] = [
   {
@@ -17,12 +19,14 @@ export const TECH_STACK: Tech[] = [
     lang: "js",
     tabName: "index.js",
     icon: ICON_BASE_PATH + "javascript.svg",
+    description:
+      "El lenguaje que corre en todos lados, a veces a pesar de sus propias reglas.",
     // Medio malo
     content: `// The beauty of loose typing
   const result = '5' - 3; // 2
   const chaos = '5' + 3;  // "53"
   const pain = [] + {};   // "[object Object]"
-  
+
   // I actually understand why this happens.
   // (Send help)`,
   },
@@ -32,13 +36,15 @@ export const TECH_STACK: Tech[] = [
     lang: "ts",
     tabName: "index.ts",
     icon: ICON_BASE_PATH + "typescript.svg",
+    description:
+      "JavaScript con red de seguridad: atrapa errores de tipos antes de que lleguen a producción.",
     content: `interface Developer {
   coffee: boolean;
   skills: string[];
   sleep?: never; // Type 'Sleep' is optional/undefined
   }
-  
-  // Error: Property 'socialLife' is missing 
+
+  // Error: Property 'socialLife' is missing
   // in type 'FullStackDeveloper'.`,
   },
   {
@@ -47,9 +53,11 @@ export const TECH_STACK: Tech[] = [
     lang: "tsx",
     tabName: "index.tsx",
     icon: ICON_BASE_PATH + "reactjs.svg",
+    description:
+      "Librería de UI basada en componentes — la uso a través de Preact en la mayoría de mis proyectos.",
     content: `const Life = () => {
   const [bugs, setBugs] = useState(99);
-  
+
   useEffect(() => {
     if (bugs === 0) {
       // This never actually runs
@@ -66,11 +74,13 @@ export const TECH_STACK: Tech[] = [
     lang: "jsx",
     tabName: "index.astro",
     icon: ICON_BASE_PATH + "astro.svg",
+    description:
+      "Framework zero-JS por defecto: hidrata solo lo que realmente necesita interactividad.",
     // Muy del lenguaje
     content: `---
 // Server Side Only (The magic zone)
 const data = await fetchFromDB();
-const jsShippedToClient = 0; 
+const jsShippedToClient = 0;
 ---
 <h1>Fast by default.</h1>
 <script>
@@ -83,8 +93,10 @@ const jsShippedToClient = 0;
     lang: "tsx",
     tabName: "index.tsx",
     icon: ICON_BASE_PATH + "preact.svg",
+    description:
+      "React de 3KB: misma API, una fracción del peso. Ideal cuando cada kilobyte importa.",
     content: `import { h, render } from 'preact';
-  
+
   // Like React, but lighter.
   // 3kb of pure power.
   render(<h1>Fast!</h1>, document.body);`,
@@ -95,10 +107,12 @@ const jsShippedToClient = 0;
     lang: "html",
     tabName: "index.html",
     icon: ICON_BASE_PATH + "tailwindcss.svg",
-    content: `<div class="flex justify-center items-center 
-          w-full h-screen bg-gray-900 
-          text-white font-bold border-2 
-          border-red-500 hover:scale-110 
+    description:
+      "CSS utilitario: itero la interfaz sin salir del markup ni inventar nombres de clases.",
+    content: `<div class="flex justify-center items-center
+          w-full h-screen bg-gray-900
+          text-white font-bold border-2
+          border-red-500 hover:scale-110
           transition-all duration-300...">
 Centering divs is finally easy.
 </div>`,
@@ -109,6 +123,8 @@ Centering divs is finally easy.
     lang: "css",
     tabName: "index.css",
     icon: ICON_BASE_PATH + "css.svg",
+    description:
+      "La base de todo layout y animación del sitio, sin frameworks de por medio cuando no hacen falta.",
     content: `.my-life {
   display: flex;
   justify-content: center;
@@ -124,6 +140,8 @@ Centering divs is finally easy.
     lang: "html",
     tabName: "index.html",
     icon: ICON_BASE_PATH + "html.svg",
+    description:
+      "Semántica antes que divs genéricos — accesibilidad y SEO empiezan acá.",
     // Medio malo
     content: `<!DOCTYPE html>
 <div id="wrapper">
@@ -138,6 +156,8 @@ Centering divs is finally easy.
     lang: "js",
     tabName: "index.js",
     icon: ICON_BASE_PATH + "nodejs.svg",
+    description:
+      "Runtime de JavaScript en el backend — mismo lenguaje en cliente y servidor.",
     content: `const fs = require('fs');
 const path = require('path');
 
@@ -154,13 +174,15 @@ fs.readFile('resume.txt', (err, data) => {
     lang: "js",
     tabName: "index.js",
     icon: ICON_BASE_PATH + "express.svg",
+    description:
+      "Framework minimalista para armar APIs REST con middlewares encadenados.",
     content: `const app = express();
 
 // The middleware chain
 app.use((req, res, next) => {
   console.log('Request received at:', Date.now());
   // If I forget next(), the browser hangs forever
-  next(); 
+  next();
 });
 
 app.get('/', (req, res) => res.send('Hello World'));`,
@@ -171,6 +193,8 @@ app.get('/', (req, res) => res.send('Hello World'));`,
     lang: "bash",
     tabName: "index.sh",
     icon: ICON_BASE_PATH + "bash.svg",
+    description:
+      "Scripts de automatización, deploys y tareas repetitivas desde la terminal.",
     content: `#!/bin/bash
 # Do not run this on production
 if [ "$USER" != "root" ]; then
@@ -185,9 +209,11 @@ rm -rf /tmp/* # Living dangerously`,
     lang: "powershell",
     tabName: "index.ps1",
     icon: ICON_BASE_PATH + "powershell.svg",
+    description:
+      "Shell y scripting en entornos Windows — pipeline de objetos en vez de texto plano.",
     content: `# Verbose but powerful
-Get-ChildItem -Path C:\Projects -Recurse | 
-  Where-Object { $_.Name -like "*node_modules*" } | 
+Get-ChildItem -Path C:\Projects -Recurse |
+  Where-Object { $_.Name -like "*node_modules*" } |
   Measure-Object -Property Length -Sum
 
 # Calculating the weight of the universe...`,
@@ -198,6 +224,8 @@ Get-ChildItem -Path C:\Projects -Recurse |
     lang: "python",
     tabName: "index.py",
     icon: ICON_BASE_PATH + "python.svg",
+    description:
+      "Para automatización y scripts rápidos: todo lo que se resuelve mejor con indentación que con llaves.",
     content: `import antigravity
 
 def clean_code():
@@ -226,7 +254,9 @@ def clean_code():
     lang: "sql",
     tabName: "index.sql",
     icon: ICON_BASE_PATH + "mysql.svg",
-    content: `ALTER TABLE orders 
+    description:
+      "Base de datos relacional clásica — sólida para modelos de datos bien definidos.",
+    content: `ALTER TABLE orders
 ADD INDEX idx_user_date (user_id, created_at);
 
 -- Query went from 5.2s to 0.04s.
@@ -238,10 +268,12 @@ ADD INDEX idx_user_date (user_id, created_at);
     lang: "sql",
     tabName: "index.sql",
     icon: ICON_BASE_PATH + "postgresql.svg",
-    content: `/* JSONB: When you want NoSQL 
+    description:
+      "Mi base relacional de referencia: JSONB, window functions y transacciones ACID.",
+    content: `/* JSONB: When you want NoSQL
    inside your SQL */
-SELECT data->>'preferences' 
-FROM user_settings 
+SELECT data->>'preferences'
+FROM user_settings
 WHERE data @> '{"theme": "dark"}';
 
 -- ACID compliant AND flexible. Perfect.`,
@@ -252,12 +284,14 @@ WHERE data @> '{"theme": "dark"}';
     lang: "js",
     tabName: "index.js",
     icon: ICON_BASE_PATH + "mongodb.svg",
+    description:
+      "Base NoSQL orientada a documentos — esquemas flexibles cuando el dominio cambia rápido.",
     content: `db.collection('ideas').aggregate([
   { $match: { status: 'feasible' } },
   { $lookup: { from: 'time', ... } },
   { $project: { sleep: 0 } }
 ]);
-// Schemas? Where we're going, 
+// Schemas? Where we're going,
 // we don't need schemas.`,
   },
   {
@@ -266,6 +300,8 @@ WHERE data @> '{"theme": "dark"}';
     lang: "json",
     tabName: "index.json",
     icon: ICON_BASE_PATH + "json.svg",
+    description:
+      "El formato universal de intercambio de datos — configs, APIs, todo pasa por acá.",
     content: `{
   "name": "package.json",
   "scripts": {
@@ -283,6 +319,8 @@ WHERE data @> '{"theme": "dark"}';
     lang: "dockerfile",
     tabName: "Dockerfile",
     icon: ICON_BASE_PATH + "docker.svg",
+    description:
+      "Empaqueto apps en contenedores para que corran igual en dev, staging y producción.",
     content: `FROM node:18-alpine
 
 # It works on my machine...
@@ -299,6 +337,8 @@ CMD ["node", "server.js"]`,
     lang: "bash",
     tabName: "index.sh",
     icon: ICON_BASE_PATH + "git.svg",
+    description:
+      "Control de versiones — ramas, commits atómicos y un historial que cuenta la historia del proyecto.",
     content: `$ git status
 On branch master
 Your branch is ahead of 'origin/master' by 1 commit.
@@ -313,6 +353,8 @@ CONFLICT (content): Merge conflict in file.js
     lang: "bash",
     tabName: "index.sh",
     icon: ICON_BASE_PATH + "github.svg",
+    description:
+      "Hosting de repos y pull requests — donde vive la colaboración de cada proyecto.",
     content: `git push origin feature/new-ui
 
 # Opening Pull Request...
@@ -326,6 +368,8 @@ CONFLICT (content): Merge conflict in file.js
     lang: "bash",
     tabName: "index.sh",
     icon: ICON_BASE_PATH + "npm.svg",
+    description:
+      "Gestor de paquetes de Node: dependencias, scripts y el ecosistema de JavaScript.",
     content: `$ npm install universe-library
 
 # added 1452 packages from 843 contributors
@@ -339,6 +383,8 @@ CONFLICT (content): Merge conflict in file.js
     lang: "bash",
     tabName: "index.sh",
     icon: ICON_BASE_PATH + "linux.svg",
+    description:
+      "Mi sistema operativo de trabajo — terminal, permisos y control real sobre el entorno.",
     content: `$ ls -la
 drwxr-xr-x  user  group  4096  .config
 -rwxrwxrwx  root  root   1234  script.sh
@@ -352,6 +398,7 @@ $ chmod 777 script.sh
     lang: "bash",
     tabName: "index.sh",
     icon: ICON_BASE_PATH + "ubuntu.svg",
+    description: "La distro Linux que uso a diario para desarrollo y servidores.",
     content: `$ sudo apt-get update
 $ sudo apt-get upgrade
 
@@ -365,6 +412,8 @@ $ sudo apt-get upgrade
     lang: "json",
     tabName: "settings.json",
     icon: ICON_BASE_PATH + "vscode.svg",
+    description:
+      "Mi editor: extensiones, formateo automático y un tema oscuro que cuida los ojos.",
     content: `{
   "editor.fontFamily": "'JetBrains Mono', monospace",
   "editor.fontLigatures": true,
@@ -380,6 +429,8 @@ $ sudo apt-get upgrade
     lang: "tsx",
     tabName: "App.tsx",
     icon: ICON_BASE_PATH + "react-native.svg",
+    description:
+      "React aplicado a mobile — comparto lógica entre iOS y Android sin perder experiencia nativa.",
     content: `import { Platform } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -396,9 +447,11 @@ const styles = StyleSheet.create({
     lang: "js",
     tabName: "index.js",
     icon: ICON_BASE_PATH + "eslint.svg",
+    description:
+      "Linter que atrapa errores y fuerza consistencia antes de que el código llegue a review.",
     content: `/* eslint-disable react-hooks/exhaustive-deps */
 
-// Warning: 'variable' is assigned a value 
+// Warning: 'variable' is assigned a value
 // but never used.
 
 // Me: "I'm saving it for later!"`,
@@ -409,6 +462,7 @@ const styles = StyleSheet.create({
     lang: "js",
     tabName: "index.js",
     icon: ICON_BASE_PATH + "prettier.svg",
+    description: "Formateo automático de código — cero discusiones de estilo en los PRs.",
     content: `// Before Prettier:
 const x=1;function test(){return x}
 
@@ -425,6 +479,7 @@ function test() {
     lang: "ts",
     tabName: "index.test.ts",
     icon: ICON_BASE_PATH + "vitest.svg",
+    description: "Framework de testing rápido, integrado nativamente con Vite.",
     content: `import { expect, test } from 'vitest';
 
 test('math works', () => {
@@ -442,6 +497,7 @@ test('my code works', () => {
     lang: "ts",
     tabName: "index.test.ts",
     icon: ICON_BASE_PATH + "jest.svg",
+    description: "Testing framework para JavaScript/TypeScript — mocks, snapshots y cobertura.",
     // Hecho con copilot, es largo
     content: `import { describe, it, expect } from '@jest/globals';
 
@@ -463,13 +519,15 @@ describe('Array', () => {
     lang: "ts",
     tabName: "index.ts",
     icon: ICON_BASE_PATH + "zod.svg",
+    description:
+      "Validación de esquemas con inferencia de tipos — chequeo en runtime lo que TypeScript solo valida en compilación.",
     content: `const UserSchema = z.object({
   username: z.string().min(3),
   email: z.string().email(),
   age: z.number().gte(18)
 });
 
-// "Validation failed: Expected number, 
+// "Validation failed: Expected number,
 // received string" -> No more runtime crashes.`,
   },
   {
@@ -478,6 +536,7 @@ describe('Array', () => {
     lang: "md",
     tabName: "README.md",
     icon: ICON_BASE_PATH + "markdown.svg",
+    description: "Escribo documentación y contenido sin salir del texto plano.",
     content: `# Project Documentation
 
 ## Getting Started
@@ -493,6 +552,7 @@ describe('Array', () => {
     lang: "tsx",
     tabName: "index.tsx",
     icon: ICON_BASE_PATH + "react-router.svg",
+    description: "Ruteo del lado del cliente para aplicaciones React de una sola página.",
     content: `<Routes>
   <Route path="/" element={<Home />} />
   <Route path="*" element={<NotFound />} />
@@ -507,6 +567,8 @@ describe('Array', () => {
     lang: "ts",
     tabName: "index.ts",
     icon: ICON_BASE_PATH + "zustand.svg",
+    description:
+      "Manejo de estado global simple, sin el boilerplate de soluciones más pesadas.",
     content: `import create from 'zustand';
 
 const useStore = create(set => ({
@@ -522,6 +584,7 @@ const useStore = create(set => ({
     lang: "js",
     tabName: "index.js",
     icon: ICON_BASE_PATH + "vite.svg",
+    description: "Build tool y dev server ultrarrápido — HMR casi instantáneo.",
     content: `// Vite Config
 export default defineConfig({
   plugins: [react()],
@@ -538,6 +601,7 @@ export default defineConfig({
     lang: "yaml",
     tabName: "workflow.yml",
     icon: ICON_BASE_PATH + "github-actions.svg",
+    description: "CI/CD directo en el repo: tests y deploys automáticos en cada push.",
     content: `name: Deploy to Production
 on: [push]
 jobs:
@@ -554,6 +618,7 @@ jobs:
     lang: "js",
     tabName: "index.js",
     icon: ICON_BASE_PATH + "jwt.svg",
+    description: "Tokens firmados para autenticación stateless entre cliente y servidor.",
     content: `// Header.Payload.Signature
 const token = "eyJhbGciOiJIUzI1Ni...";
 

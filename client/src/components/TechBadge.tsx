@@ -5,12 +5,19 @@ interface Props {
   name: string;
   icon: string;
   explanation: string;
+  /** Compact square icon chip (no label) — used in the "Sobre mí" stack grid. */
+  iconOnly?: boolean;
 }
 
 const POPOVER_WIDTH = 280;
 const GAP = 8;
 
-export default function TechBadge({ name, icon, explanation }: Props) {
+export default function TechBadge({
+  name,
+  icon,
+  explanation,
+  iconOnly = false,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [positioned, setPositioned] = useState(false);
@@ -155,7 +162,11 @@ export default function TechBadge({ name, icon, explanation }: Props) {
     <div class="relative inline-block" ref={badgeRef}>
       <button
         type="button"
-        class="bg-theme-200 text-theme-700 hover:bg-theme-300 focus-visible:ring-theme-500 flex cursor-pointer items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:outline-none"
+        class={
+          iconOnly
+            ? "tech-chip tech-chip-glow text-theme-700 focus-visible:ring-theme-500 flex size-9 cursor-pointer items-center justify-center p-1.5 hover:scale-110 active:scale-90 focus-visible:ring-2 focus-visible:outline-none"
+            : "tech-chip tech-chip-glow text-theme-700 focus-visible:ring-theme-500 flex cursor-pointer items-center gap-1.5 px-2.5 py-1 text-xs font-medium hover:scale-105 active:scale-90 focus-visible:ring-2 focus-visible:outline-none"
+        }
         onMouseEnter={show}
         onMouseLeave={scheduleHide}
         onClick={toggle}
@@ -166,17 +177,17 @@ export default function TechBadge({ name, icon, explanation }: Props) {
         <img
           src={icon}
           alt=""
-          class="size-3.5 object-contain"
+          class={iconOnly ? "h-full w-full object-contain" : "size-3.5 object-contain"}
           aria-hidden="true"
         />
-        <span>{name}</span>
+        {!iconOnly && <span>{name}</span>}
       </button>
 
       {open &&
         createPortal(
           <div
             ref={popoverRef}
-            class={`border-theme-200 fixed z-50 rounded-xl border bg-white p-3.5 shadow-lg transition-[opacity,transform] duration-150 ${
+            class={`border-theme-200 fixed z-50 rounded-sm border bg-white p-3.5 shadow-lg transition-[opacity,transform] duration-150 ${
               popoverVisible
                 ? "scale-100 opacity-100"
                 : "pointer-events-none scale-95 opacity-0"

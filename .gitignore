@@ -1,2 +1,5 @@
 # SDD agent artifacts (local only)
 .atl/
+
+# Claude Code local session data
+.claude/

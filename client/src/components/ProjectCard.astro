@@ -1,32 +1,32 @@
 ---
 import TechBadge from "@/components/TechBadge";
 import ImageCarousel from "@/components/ImageCarousel";
+import AskAIButton from "@/components/AskAIButton";
 import type { Project } from "@/constants/projects";
 
 interface Props {
   project: Project;
   slideCount?: number;
+  /** Max tilt rotation in degrees — smaller for visually larger cards. */
+  tiltMax?: number;
 }
 
-const { project, slideCount = 2 } = Astro.props;
+const { project, slideCount = 2, tiltMax = 2.5 } = Astro.props;
 ---
 
 <article
-  class="group border-theme-200 bg-theme-50 hover:border-theme-400 flex h-full flex-col rounded-xl border p-6 shadow-sm transition-all duration-300 hover:shadow-md"
+  data-tilt
+  data-tilt-max={tiltMax}
+  class="group border-theme-200 bg-theme-50/90 hover:border-theme-400 [transform-style:preserve-3d] [will-change:transform] flex h-full flex-col rounded-sm border p-6 shadow-sm transition-[box-shadow,border-color] duration-300 hover:shadow-[0_8px_30px_-8px] hover:shadow-theme-400/30"
 >
-  <div class="flex items-start justify-between gap-2">
-    <span
-      class="bg-theme-300 font-martian-mono text-theme-700 inline-block shrink-0 rounded-full px-3 py-0.5 text-xs font-medium"
-    >
-      {project.category}
-    </span>
-    {
-      project.links?.repo && (
+  {
+    project.links?.repo && (
+      <div class="flex justify-end">
         <a
           href={project.links.repo}
           target="_blank"
           rel="noopener noreferrer"
-          class="text-theme-400 hover:text-theme-600 transition-colors"
+          class="text-theme-400 hover:text-theme-600 inline-block transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-125 hover:rotate-12 active:scale-90"
           aria-label="Ver repositorio"
         >
           <svg
@@ -42,9 +42,9 @@ const { project, slideCount = 2 } = Astro.props;
             <path d="M9 18l6-6-6-6" />
           </svg>
         </a>
-      )
-    }
-  </div>
+      </div>
+    )
+  }
 
   <h3 class="font-martian-mono text-theme-800 mt-3 text-xl font-semibold">
     {project.title}
@@ -90,7 +90,7 @@ const { project, slideCount = 2 } = Astro.props;
           href={project.links.demo}
           target="_blank"
           rel="noopener noreferrer"
-          class="bg-theme-400 hover:bg-theme-500 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-white transition-colors"
+          class="bg-theme-400 hover:bg-theme-500 inline-flex items-center gap-1.5 rounded-sm px-3 py-1 text-xs font-medium text-white transition-all duration-250 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-90"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +117,7 @@ const { project, slideCount = 2 } = Astro.props;
           href={project.links.playStore}
           target="_blank"
           rel="noopener noreferrer"
-          class="bg-theme-200 text-theme-700 hover:bg-theme-300 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors"
+          class="bg-theme-200 text-theme-700 hover:bg-theme-300 inline-flex items-center gap-1.5 rounded-sm px-3 py-1 text-xs font-medium transition-all duration-250 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-90"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -136,30 +136,6 @@ const { project, slideCount = 2 } = Astro.props;
       )
     }
 
-    <!-- AI "Saber más" button -->
-    <button
-      type="button"
-      class="from-theme-400 to-theme-500 hover:from-theme-500 hover:to-theme-600 ml-auto inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r px-3 py-1 text-xs font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-md"
-      title="Preguntale a mi asistente con IA sobre este proyecto"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="size-3.5"
-        aria-hidden="true"
-      >
-        <path
-          d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
-        ></path>
-        <path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"
-        ></path><path d="M5 18H3"></path>
-      </svg>
-      Saber más
-    </button>
+    <AskAIButton projectTitle={project.title} client:load />
   </div>
 </article>

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "preact/hooks";
+import { useSignalEffect } from "@preact/signals";
 import { useChatStream } from "@/hooks/useChatStream";
 import AIChatMessage from "@/components/AIChatMessage";
+import { pendingAIQuestion } from "@/components/aiChatSignal";
 
 const API_URL = "https://ai-router.mastropietro.work.gd/chat";
 
@@ -74,19 +76,56 @@ export default function AIChat({ systemPrompt }: AIChatProps) {
     isUserScrolledUp.current = distFromBottom > 100;
   };
 
+  // Send + always scroll the conversation down to the new message, even if
+  // the user had scrolled up earlier.
+  const sendAndScroll = (text: string) => {
+    isUserScrolledUp.current = false;
+    sendMessage(text);
+    requestAnimationFrame(() => {
+      const container = messagesContainerRef.current;
+      container?.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    });
+  };
+
   const handleSubmit = () => {
     const trimmed = input.trim();
     if (!trimmed) return;
-    sendMessage(trimmed);
+    sendAndScroll(trimmed);
     setInput("");
     // Defer focus to after Preact re-render
-    requestAnimationFrame(() => textareaRef.current?.focus());
+    requestAnimationFrame(() =>
+      textareaRef.current?.focus({ preventScroll: true }),
+    );
   };
 
-  // Refocus textarea when streaming finishes or on error
+  // Someone (e.g. a project card's "Saber más" button) asked a question on
+  // our behalf — send it and clear the signal so it doesn't refire.
+  useSignalEffect(() => {
+    const pending = pendingAIQuestion.value;
+    if (pending) {
+      sendAndScroll(pending.text);
+      pendingAIQuestion.value = null;
+    }
+  });
+
+  // Refocus textarea when streaming finishes or on error — but not on the
+  // very first mount, where focusing would scroll the page down to the chat
+  // section before the user has even seen the hero.
+  const didMountRef = useRef(false);
   useEffect(() => {
-    if (streamState === "done" || streamState === "error" || streamState === "idle") {
-      textareaRef.current?.focus();
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+    if (
+      streamState === "done" ||
+      streamState === "error" ||
+      streamState === "idle"
+    ) {
+      textareaRef.current?.focus({ preventScroll: true });
     }
   }, [streamState]);
 
@@ -98,7 +137,7 @@ export default function AIChat({ systemPrompt }: AIChatProps) {
   };
 
   return (
-    <div class="border-theme-200 flex flex-col rounded-xl border bg-white shadow">
+    <div class="border-theme-200 flex flex-col rounded-sm border bg-white/90 shadow backdrop-blur-sm">
       {/* Messages area */}
       <div
         ref={messagesContainerRef}
@@ -121,8 +160,8 @@ export default function AIChat({ systemPrompt }: AIChatProps) {
                   <button
                     key={s}
                     type="button"
-                    onClick={() => sendMessage(s)}
-                    class="bg-theme-100 font-martian-mono text-theme-700 hover:bg-theme-200 rounded-full px-3 py-1.5 text-xs transition-colors"
+                    onClick={() => sendAndScroll(s)}
+                    class="tech-chip tech-chip-glow font-martian-mono text-theme-700 cursor-pointer px-3 py-1.5 text-xs hover:scale-105 active:scale-90"
                   >
                     {s}
                   </button>
@@ -168,7 +207,7 @@ export default function AIChat({ systemPrompt }: AIChatProps) {
           <button
             type="button"
             onClick={retry}
-            class="bg-theme-400 font-martian-mono hover:bg-theme-500 shrink-0 rounded-full px-3 py-1 text-xs font-medium text-white transition-colors"
+            class="bg-theme-400 font-martian-mono hover:bg-theme-500 shrink-0 rounded-sm px-3 py-1 text-xs font-medium text-white transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-90"
           >
             Reintentar
           </button>
@@ -187,14 +226,14 @@ export default function AIChat({ systemPrompt }: AIChatProps) {
             rows={1}
             disabled={isLoading}
             aria-label="Escribí tu pregunta"
-            class="border-theme-200 bg-theme-50 font-martian-mono text-theme-800 placeholder:text-theme-400 focus:border-theme-400 max-h-[120px] min-h-[40px] flex-1 resize-none rounded-lg border px-3 py-2 text-sm focus:outline-none disabled:opacity-50"
+            class="border-theme-200 bg-theme-50 font-martian-mono text-theme-800 placeholder:text-theme-400 focus:border-theme-400 max-h-[120px] min-h-[40px] flex-1 resize-none rounded-sm border px-3 py-2 text-sm focus:outline-none disabled:opacity-50"
           />
           <button
             type="button"
             onClick={handleSubmit}
             disabled={isLoading || !input.trim()}
             aria-label="Enviar mensaje"
-            class="bg-theme-400 hover:bg-theme-500 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white transition-colors disabled:opacity-50"
+            class="bg-theme-400 hover:bg-theme-500 flex h-10 w-10 shrink-0 items-center justify-center rounded-sm text-white transition-all duration-250 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-90 disabled:opacity-50 disabled:hover:scale-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -18,7 +18,7 @@ export interface Project {
   };
 }
 
-const ICON_BASE = "/src/assets/icons/tech/";
+const ICON_BASE = "/icons/tech/";
 
 export const PROJECTS: Project[] = [
   {

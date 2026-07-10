@@ -5,59 +5,30 @@ import Tab from "./Tab";
 
 <div
   id="mini-terminal"
-  class="mini-terminal bg-theme-800 relative flex h-80 w-xl flex-col rounded-sm"
+  class="mini-terminal bg-theme-800 border-theme-700 relative flex h-72 w-full max-w-xl shrink-0 flex-col rounded-sm border sm:h-80 md:w-[min(36rem,45vw)]"
 >
   <div class="bg-theme-700 flex h-9 w-full rounded-t-sm">
     <Tab client:load client:only />
   </div>
-  <div class="flex w-full grow px-4 py-2">
+  <div class="flex w-full grow overflow-hidden px-4 py-2">
     <Content client:load client:only />
   </div>
 </div>
 
 <style>
   .mini-terminal {
-    transition: transform 0.1s ease-out;
     transform-style: preserve-3d;
     will-change: transform;
   }
 </style>
 
 <script>
+  import { attachTilt } from "@/lib/tilt";
+
   const card = document.getElementById("mini-terminal");
   if (!card) throw new Error("mini-terminal not found");
 
-  const MAX_TILT = 5; /* degrees */
-  const PERSPECTIVE = 800; /* px */
-  const PEAK = 200; /* px — strongest tilt at this distance from center */
-
-  let rafId = 0; /* 0 = no pending frame; rAF returns > 0 */
-
-  document.addEventListener("mousemove", (e) => {
-    if (rafId) return; /* throttle to one frame */
-    rafId = requestAnimationFrame(() => {
-      rafId = 0;
-
-      const rect = card.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2; /* card center X */
-      const cy = rect.top + rect.height / 2; /* card center Y */
-
-      const dx = e.clientX - cx; /* horizontal delta */
-      const dy = e.clientY - cy; /* vertical delta */
-      const dist = Math.sqrt(dx * dx + dy * dy) || 1; /* avoid div by zero */
-
-      /* Tilt grows linearly to PEAK, then decays with distance */
-      const magnitude =
-        dist < PEAK ? MAX_TILT * (dist / PEAK) : MAX_TILT * (PEAK / dist);
-
-      const rotateY = (dx / dist) * magnitude;
-      const rotateX = (-dy / dist) * magnitude;
-
-      card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    });
-  });
-
-  document.addEventListener("mouseleave", () => {
-    card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(0deg) rotateY(0deg)`;
-  });
+  // Only react while the pointer is actually over the terminal — an
+  // "ambient" (page-wide) tilt reads as the card moving on its own.
+  attachTilt(card, { mode: "hover", maxTilt: 8, peak: 260, lerp: 0.15 });
 </script>

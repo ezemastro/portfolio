@@ -3,31 +3,114 @@ import MiniTerminal from "@/components/MiniTerminal/MiniTerminal.astro";
 import TechSelector from "@/components/MiniTerminal/TechSelector";
 ---
 
-<header class="relative flex h-5/6 min-h-80 justify-center">
+<header
+  id="inicio"
+  class="relative flex min-h-screen scroll-mt-16 items-center justify-center pt-16"
+>
   <div
-    class="background-pattern absolute -z-1 h-full w-full mask-b-from-60% mask-b-to-100% bg-fixed opacity-30"
+    class="glow-blob absolute top-1/4 -left-24 -z-1 h-96 w-96"
+    aria-hidden="true"
   >
   </div>
   <div
-    class="flex w-full max-w-400 flex-col items-center justify-between gap-12 p-10 md:flex-row"
+    class="container-page flex w-full flex-col items-center justify-between gap-12 py-10 md:flex-row"
   >
-    <div class="">
+    <div class="w-full md:w-auto">
       <h1
-        class="text-theme-800 font-martian-mono animate-fade-in-right text-center text-7xl leading-20 font-medium uppercase md:text-left"
+        class="text-theme-800 font-martian-mono animate-fade-in-right text-center text-4xl leading-tight font-medium uppercase sm:text-5xl md:text-left md:text-6xl lg:text-7xl lg:leading-20"
       >
         Ezequiel<br />Mastropietro
       </h1>
       <h2
-        class="text-theme-700 font-martian-mono animate-fade-in-right text-center text-xl font-semibold md:text-left"
+        class="text-theme-700 font-martian-mono animate-fade-in-right min-h-7 text-center text-lg font-semibold sm:min-h-8 sm:text-xl md:text-left"
       >
-        Desarrollador full stack
+        <span id="hero-typewriter">Desarrollador full stack</span><span
+          class="type-cursor"
+          aria-hidden="true"></span>
       </h2>
-      <div class="animate-fade-in-up animate-delay-300 mt-8 min-h-18">
+      <div
+        class="animate-fade-in-up animate-delay-300 mt-8 min-h-18 px-2 md:px-0"
+      >
         <TechSelector client:load client:only />
       </div>
     </div>
-    <div class="animate-fade-in-up animate-delay-200">
+    <div class="animate-fade-in-up animate-delay-200 flex w-full justify-center md:w-auto">
       <MiniTerminal />
     </div>
   </div>
+
+  <!-- Scroll hint — fades out as soon as the user starts scrolling. -->
+  <a
+    id="scroll-hint"
+    href="#proyectos"
+    aria-label="Ir a proyectos"
+    class="text-theme-500 hover:text-theme-700 absolute bottom-6 left-1/2 -translate-x-1/2 transition-opacity duration-500"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="size-6 animate-bounce motion-reduce:animate-none"
+    >
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </a>
 </header>
+
+<script>
+  // Rotating typewriter on the hero subtitle. Skipped entirely under
+  // prefers-reduced-motion (the static default phrase stays).
+  const PHRASES = [
+    "Desarrollador full stack",
+    "De la idea al deploy",
+    "Web · Mobile · Backend",
+  ];
+  const target = document.getElementById("hero-typewriter");
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (target && !reduceMotion) {
+    const TYPE_MS = 55;
+    const ERASE_MS = 28;
+    const HOLD_MS = 2600;
+    let phrase = 0;
+
+    const type = (i: number) => {
+      target.textContent = PHRASES[phrase].slice(0, i);
+      if (i < PHRASES[phrase].length) {
+        setTimeout(() => type(i + 1), TYPE_MS);
+      } else {
+        setTimeout(erase, HOLD_MS);
+      }
+    };
+
+    const erase = () => {
+      const text = target.textContent ?? "";
+      if (text.length > 0) {
+        target.textContent = text.slice(0, -1);
+        setTimeout(erase, ERASE_MS);
+      } else {
+        phrase = (phrase + 1) % PHRASES.length;
+        type(0);
+      }
+    };
+
+    setTimeout(erase, HOLD_MS);
+  }
+
+  // Hide the scroll hint once the user scrolls.
+  const hint = document.getElementById("scroll-hint");
+  if (hint) {
+    const onScroll = () => {
+      hint.classList.toggle("opacity-0", window.scrollY > 80);
+      hint.classList.toggle("pointer-events-none", window.scrollY > 80);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+</script>
