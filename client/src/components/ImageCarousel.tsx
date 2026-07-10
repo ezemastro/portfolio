@@ -21,7 +21,7 @@ export default function ImageCarousel({ count }: Props) {
       const clamped = Math.max(0, Math.min(newIndex, count - 1));
       setIndex(clamped);
     },
-    [count]
+    [count],
   );
 
   const goPrev = useCallback(() => goTo(index - 1), [index, goTo]);
@@ -32,25 +32,19 @@ export default function ImageCarousel({ count }: Props) {
   }, []);
 
   // --- Touch handlers ---
-  const onTouchStart = useCallback(
-    (e: TouchEvent) => {
-      touchStartX.current = e.touches[0].clientX;
-      touchCurrentX.current = e.touches[0].clientX;
-      setDragging(true);
-      setDragOffset(0);
-    },
-    []
-  );
+  const onTouchStart = useCallback((e: TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchCurrentX.current = e.touches[0].clientX;
+    setDragging(true);
+    setDragOffset(0);
+  }, []);
 
-  const onTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (touchStartX.current === null) return;
-      touchCurrentX.current = e.touches[0].clientX;
-      const delta = touchCurrentX.current - touchStartX.current;
-      setDragOffset(delta);
-    },
-    []
-  );
+  const onTouchMove = useCallback((e: TouchEvent) => {
+    if (touchStartX.current === null) return;
+    touchCurrentX.current = e.touches[0].clientX;
+    const delta = touchCurrentX.current - touchStartX.current;
+    setDragOffset(delta);
+  }, []);
 
   const onTouchEnd = useCallback(() => {
     if (touchStartX.current === null) return;
@@ -99,7 +93,9 @@ export default function ImageCarousel({ count }: Props) {
         class="flex touch-pan-y select-none"
         style={{
           transform: `translateX(${translateX}%)`,
-          transition: dragging ? "none" : `transform ${TRANSITION_DURATION}ms ease-in-out`,
+          transition: dragging
+            ? "none"
+            : `transform ${TRANSITION_DURATION}ms ease-in-out`,
         }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
@@ -108,14 +104,14 @@ export default function ImageCarousel({ count }: Props) {
         {Array.from({ length: count }, (_, i) => (
           <div
             key={i}
-            class="flex aspect-video w-full shrink-0 cursor-pointer items-center justify-center bg-gradient-to-br from-theme-200 to-theme-400"
+            class="from-theme-200 to-theme-400 flex aspect-video w-full shrink-0 cursor-pointer items-center justify-center bg-gradient-to-br"
             onClick={openModal}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               fill="none"
-              class="size-14 text-theme-500/40"
+              class="text-theme-500/40 size-14"
               aria-hidden="true"
             >
               <rect
@@ -131,7 +127,14 @@ export default function ImageCarousel({ count }: Props) {
               <circle cx="10" cy="12" r="1.5" fill="currentColor" />
               <circle cx="15" cy="12" r="1.5" fill="currentColor" />
               <circle cx="20" cy="12" r="1.5" fill="currentColor" />
-              <rect x="10" y="22" width="12" height="4" rx="1" fill="currentColor" />
+              <rect
+                x="10"
+                y="22"
+                width="12"
+                height="4"
+                rx="1"
+                fill="currentColor"
+              />
               <rect
                 x="24"
                 y="22"
@@ -170,7 +173,7 @@ export default function ImageCarousel({ count }: Props) {
           <button
             type="button"
             onClick={goPrev}
-            class="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-theme-950/30 p-1.5 text-white opacity-0 transition-all duration-200 hover:bg-theme-950/50 hover:scale-110 group-hover/carousel:opacity-100 focus-visible:opacity-100"
+            class="bg-theme-950/30 hover:bg-theme-950/50 absolute top-1/2 left-2 -translate-y-1/2 rounded-full p-1.5 text-white opacity-0 transition-all duration-200 group-hover/carousel:opacity-100 hover:scale-110 focus-visible:opacity-100"
             aria-label="Previous slide"
           >
             <svg
@@ -189,7 +192,7 @@ export default function ImageCarousel({ count }: Props) {
           <button
             type="button"
             onClick={goNext}
-            class="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-theme-950/30 p-1.5 text-white opacity-0 transition-all duration-200 hover:bg-theme-950/50 hover:scale-110 group-hover/carousel:opacity-100 focus-visible:opacity-100"
+            class="bg-theme-950/30 hover:bg-theme-950/50 absolute top-1/2 right-2 -translate-y-1/2 rounded-full p-1.5 text-white opacity-0 transition-all duration-200 group-hover/carousel:opacity-100 hover:scale-110 focus-visible:opacity-100"
             aria-label="Next slide"
           >
             <svg
@@ -218,7 +221,7 @@ export default function ImageCarousel({ count }: Props) {
               onClick={() => goTo(i)}
               class={`size-2 rounded-full transition-all duration-200 ${
                 i === index
-                  ? "bg-white scale-110 shadow-sm"
+                  ? "scale-110 bg-white shadow-sm"
                   : "bg-white/50 hover:bg-white/80"
               }`}
               aria-label={`Go to slide ${i + 1}`}

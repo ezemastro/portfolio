@@ -48,20 +48,16 @@ import Tab from "./Tab";
 
       /* Tilt grows linearly to PEAK, then decays with distance */
       const magnitude =
-        dist < PEAK
-          ? MAX_TILT * (dist / PEAK)
-          : MAX_TILT * (PEAK / dist);
+        dist < PEAK ? MAX_TILT * (dist / PEAK) : MAX_TILT * (PEAK / dist);
 
       const rotateY = (dx / dist) * magnitude;
       const rotateX = (-dy / dist) * magnitude;
 
-      card.style.transform =
-        `perspective(${PERSPECTIVE}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
   });
 
   document.addEventListener("mouseleave", () => {
-    card.style.transform =
-      `perspective(${PERSPECTIVE}px) rotateX(0deg) rotateY(0deg)`;
+    card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(0deg) rotateY(0deg)`;
   });
 </script>

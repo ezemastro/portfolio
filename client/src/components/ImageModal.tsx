@@ -55,7 +55,7 @@ export default function ImageModal() {
   return (
     <div
       ref={backdropRef}
-      class="fixed inset-0 z-[100] flex items-center justify-center bg-theme-950/80 p-4 opacity-0 transition-opacity duration-300"
+      class="bg-theme-950/80 fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300"
       onClick={(e) => {
         // Close only if clicking the backdrop itself, not children
         if (e.target === backdropRef.current) close();
@@ -68,7 +68,7 @@ export default function ImageModal() {
       <button
         type="button"
         onClick={close}
-        class="absolute top-4 right-4 z-10 rounded-full bg-theme-950/50 p-2 text-white transition-colors hover:bg-theme-950/80 focus-visible:ring-2 focus-visible:ring-theme-400 focus-visible:outline-none"
+        class="bg-theme-950/50 hover:bg-theme-950/80 focus-visible:ring-theme-400 absolute top-4 right-4 z-10 rounded-full p-2 text-white transition-colors focus-visible:ring-2 focus-visible:outline-none"
         aria-label="Close"
       >
         <svg
@@ -87,12 +87,12 @@ export default function ImageModal() {
       </button>
 
       {/* Placeholder image large in center */}
-      <div class="flex aspect-video w-full max-w-4xl items-center justify-center rounded-xl bg-gradient-to-br from-theme-200 to-theme-400 shadow-2xl">
+      <div class="from-theme-200 to-theme-400 flex aspect-video w-full max-w-4xl items-center justify-center rounded-xl bg-gradient-to-br shadow-2xl">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 48 48"
           fill="none"
-          class="size-24 text-theme-500/40"
+          class="text-theme-500/40 size-24"
           aria-hidden="true"
         >
           <rect
@@ -108,7 +108,14 @@ export default function ImageModal() {
           <circle cx="10" cy="12" r="1.5" fill="currentColor" />
           <circle cx="15" cy="12" r="1.5" fill="currentColor" />
           <circle cx="20" cy="12" r="1.5" fill="currentColor" />
-          <rect x="10" y="22" width="12" height="4" rx="1" fill="currentColor" />
+          <rect
+            x="10"
+            y="22"
+            width="12"
+            height="4"
+            rx="1"
+            fill="currentColor"
+          />
           <rect
             x="24"
             y="22"

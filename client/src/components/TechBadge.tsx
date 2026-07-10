@@ -155,7 +155,7 @@ export default function TechBadge({ name, icon, explanation }: Props) {
     <div class="relative inline-block" ref={badgeRef}>
       <button
         type="button"
-        class="flex cursor-pointer items-center gap-1.5 rounded-full bg-theme-200 px-2.5 py-1 text-xs font-medium text-theme-700 transition-all duration-200 hover:bg-theme-300 hover:scale-105 focus-visible:ring-2 focus-visible:ring-theme-500 focus-visible:outline-none"
+        class="bg-theme-200 text-theme-700 hover:bg-theme-300 focus-visible:ring-theme-500 flex cursor-pointer items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:outline-none"
         onMouseEnter={show}
         onMouseLeave={scheduleHide}
         onClick={toggle}
@@ -176,10 +176,10 @@ export default function TechBadge({ name, icon, explanation }: Props) {
         createPortal(
           <div
             ref={popoverRef}
-            class={`fixed z-50 rounded-xl border border-theme-200 bg-white p-3.5 shadow-lg transition-[opacity,transform] duration-150 ${
+            class={`border-theme-200 fixed z-50 rounded-xl border bg-white p-3.5 shadow-lg transition-[opacity,transform] duration-150 ${
               popoverVisible
-                ? "opacity-100 scale-100"
-                : "pointer-events-none opacity-0 scale-95"
+                ? "scale-100 opacity-100"
+                : "pointer-events-none scale-95 opacity-0"
             }`}
             style={{
               width: `${POPOVER_WIDTH}px`,
@@ -190,17 +190,17 @@ export default function TechBadge({ name, icon, explanation }: Props) {
             onMouseEnter={cancelHide}
             onMouseLeave={scheduleHide}
           >
-            <div class="mb-1 text-sm font-semibold leading-tight text-theme-800">
+            <div class="text-theme-800 mb-1 text-sm leading-tight font-semibold">
               {name}
             </div>
-            <p class="max-h-48 overflow-y-auto text-xs leading-relaxed text-theme-600">
+            <p class="text-theme-600 max-h-48 overflow-y-auto text-xs leading-relaxed">
               {explanation}
             </p>
             {/* Arrow */}
             <div
-              class={`absolute size-3 rotate-45 border border-theme-200 bg-white ${
+              class={`border-theme-200 absolute size-3 rotate-45 border bg-white ${
                 pos.arrowSide === "top"
-                  ? "-top-1.5 border-b-0 border-r-0"
+                  ? "-top-1.5 border-r-0 border-b-0"
                   : "-bottom-1.5 border-t-0 border-l-0"
               }`}
               style={{ left: `${clampedOffset - 6}px` }}
