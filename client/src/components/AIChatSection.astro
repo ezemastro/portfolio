@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import AIChat from "@/components/AIChat";
+
+const entries = await getCollection("aiContext");
+const systemPrompt = entries.map((e) => e.body).join("\n\n");
+---
+
+<section class="px-4 py-16 md:px-8">
+  <div class="mx-auto max-w-6xl">
+    <h2
+      class="font-martian-mono text-theme-800 text-3xl font-semibold md:text-4xl"
+    >
+      Preguntame algo
+    </h2>
+    <div
+      class="bg-theme-400 mt-2 mb-10 h-1 w-16 rounded-full"
+      aria-hidden="true"
+    >
+    </div>
+    <AIChat client:load systemPrompt={systemPrompt} />
+  </div>
+</section>
