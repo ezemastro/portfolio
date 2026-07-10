@@ -62,6 +62,9 @@ function renderMarkdown(text: string): string {
   // Line breaks (single newline = <br>)
   html = html.replace(/\n/g, "<br>");
 
+  // Remove <br> sitting between HTML tags (they add unwanted double-spacing)
+  html = html.replace(/>(<br>)+</g, "><");
+
   // Cleanup: remove empty <p><br></p> sequences
   html = html.replace(/<p><br><\/p>/g, "");
 
@@ -126,21 +129,21 @@ const SPARKLES_SVG = (
 
 /** Tailwind prose overrides scoped to the chat bubble — keeps markdown clean without a full typography plugin. */
 const PROSE_CLASSES = [
-  "[&_h1]:text-lg [&_h1]:font-semibold [&_h1]:mt-3 [&_h1]:mb-1",
-  "[&_h2]:text-base [&_h2]:font-semibold [&_h2]:mt-3 [&_h2]:mb-1",
-  "[&_h3]:text-sm [&_h3]:font-semibold [&_h3]:mt-2 [&_h3]:mb-1",
-  "[&_p]:mb-2 [&_p:last-child]:mb-0",
-  "[&_ul]:mb-2 [&_ul]:list-disc [&_ul]:pl-4",
-  "[&_ol]:mb-2 [&_ol]:list-decimal [&_ol]:pl-4",
-  "[&_li]:mb-0.5",
+  "[&_h1]:text-lg [&_h1]:font-semibold [&_h1]:mt-2 [&_h1]:mb-0.5",
+  "[&_h2]:text-base [&_h2]:font-semibold [&_h2]:mt-2 [&_h2]:mb-0.5",
+  "[&_h3]:text-sm [&_h3]:font-semibold [&_h3]:mt-1.5 [&_h3]:mb-0.5",
+  "[&_p]:mb-1 [&_p:last-child]:mb-0",
+  "[&_ul]:mb-1 [&_ul]:list-disc [&_ul]:pl-4",
+  "[&_ol]:mb-1 [&_ol]:list-decimal [&_ol]:pl-4",
+  "[&_li]:mb-0",
   "[&_strong]:font-semibold",
   "[&_code]:rounded [&_code]:bg-theme-200/60 [&_code]:px-1 [&_code]:text-xs",
-  "[&_pre]:mb-2 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-theme-800 [&_pre]:p-3 [&_pre]:text-xs [&_pre]:text-theme-100",
-  "[&_table]:mb-2 [&_table]:w-full [&_table]:text-xs [&_table]:table-auto [&_table]:font-martian-mono",
+  "[&_pre]:mb-1 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-theme-800 [&_pre]:p-3 [&_pre]:text-xs [&_pre]:text-theme-100",
+  "[&_table]:mb-1 [&_table]:w-full [&_table]:text-xs [&_table]:table-auto [&_table]:font-martian-mono",
   "[&_th]:border [&_th]:border-theme-300 [&_th]:bg-theme-200/50 [&_th]:px-2 [&_th]:py-1 [&_th]:text-left [&_th]:font-semibold [&_th]:whitespace-nowrap [&_th]:font-martian-mono",
   "[&_td]:border [&_td]:border-theme-200 [&_td]:px-2 [&_td]:py-1 [&_td]:max-w-[200px] [&_td]:font-martian-mono",
-  "[&_blockquote]:border-theme-400 [&_blockquote]:mb-2 [&_blockquote]:border-l-3 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-theme-600",
-  "[&_hr]:border-theme-200 [&_hr]:my-3",
+  "[&_blockquote]:border-theme-400 [&_blockquote]:mb-1 [&_blockquote]:border-l-3 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-theme-600",
+  "[&_hr]:border-theme-200 [&_hr]:my-2",
   "[&_a]:text-theme-600 [&_a]:underline",
 ].join(" ");
 
